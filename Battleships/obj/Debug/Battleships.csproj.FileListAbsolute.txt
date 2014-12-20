@@ -1,0 +1,6 @@
+c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\bin\Debug\Battleships.exe.config
+c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\bin\Debug\Battleships.exe
+c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\bin\Debug\Battleships.pdb
+c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\obj\Debug\Battleships.csprojResolveAssemblyReference.cache
+c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\obj\Debug\Battleships.exe
+c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\obj\Debug\Battleships.pdb
