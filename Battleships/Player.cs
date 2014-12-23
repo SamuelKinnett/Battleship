@@ -66,14 +66,14 @@ namespace Battleships
                             {
                                 if (shipX + shipLength > 10)
                                 {
-                                    shipX = 9 - shipLength;
+                                    shipX = 10 - shipLength;
                                 }
                             }
                             else
                             {
                                 if (shipY + shipLength > 10)
                                 {
-                                    shipY = 9 - shipLength;
+                                    shipY = 10 - shipLength;
                                 }
                             }
                             vertical = !vertical;
@@ -103,7 +103,7 @@ namespace Battleships
                             }
                             else
                             {
-                                if(shipX + shipLength + 1< 10)
+                                if(shipX + shipLength < 10)
                                 {
                                     shipX++;
                                 }
