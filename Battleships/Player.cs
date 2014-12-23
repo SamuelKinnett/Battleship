@@ -46,8 +46,6 @@ namespace Battleships
             for(int shipNumber = 0; shipNumber < 5; shipNumber++)
             {
                 shipLength = ships[shipNumber].length;
-                shipOldX = 0;
-                shipOldY = 0;
                 shipX = 0;
                 shipY = 0;
                 vertical = true;;
@@ -56,10 +54,8 @@ namespace Battleships
 
                 while(!shipPlaced)
                 {
-                    rendering.DrawShipPlacement(shipOldX, shipOldY, shipX, shipY, shipLength, vertical);
-
-                    shipOldX = shipX;
-                    shipOldY = shipY;
+                    rendering.DrawGameScreens(this);
+                    rendering.DrawShipPlacement(shipX, shipY, shipLength, vertical);
 
                     userInput = (int)Console.ReadKey(true).Key;
 
@@ -70,20 +66,66 @@ namespace Battleships
                             {
                                 if (shipX + shipLength > 10)
                                 {
-                                    shipX = 10 - shipLength;
+                                    shipX = 9 - shipLength;
                                 }
                             }
                             else
                             {
                                 if (shipY + shipLength > 10)
                                 {
-                                    shipY = 10 - shipLength;
+                                    shipY = 9 - shipLength;
                                 }
                             }
                             vertical = !vertical;
                             break;
 
-                            
+                        case 37: //left arrow
+                            if (shipX - 1 >= 0)
+                            {
+                                shipX--;
+                            }
+                            break;
+
+                        case 38: //up arrow
+                            if (shipY - 1 >= 0)
+                            {
+                                shipY--;
+                            }
+                            break;
+
+                        case 39: //right arrow
+                            if (vertical)
+                            {
+                                if(shipX + 1 < 10)
+                                {
+                                    shipX++;
+                                }
+                            }
+                            else
+                            {
+                                if(shipX + shipLength + 1< 10)
+                                {
+                                    shipX++;
+                                }
+                            }
+                            break;
+
+                        case 40: //down arrow
+                            if (vertical)
+                            {
+                                 if (shipY + shipLength < 10)
+                                 {
+                                     shipY++;
+                                 }
+                            }
+                            else
+                            {
+                                if (shipY + 1 < 10)
+                                {
+                                    shipY++;
+                                }
+                            }
+                            break;
                     }
                 }
             }

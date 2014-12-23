@@ -65,7 +65,8 @@ namespace Battleships
         {
             bool exitGame = false;
             rendering.DrawGameWindow();
-
+            rendering.DrawGameScreens(player);
+            player.PlaceShips();
             while (!exitGame) //main game loop
             {
                 rendering.DrawGameScreens(player);

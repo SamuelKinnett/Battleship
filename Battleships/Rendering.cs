@@ -349,5 +349,28 @@ namespace Battleships
 
         }
 
+        public void DrawShipPlacement(int x, int y, int length, bool vertical)
+        {
+            if (vertical)
+            {
+                for (int c = 14; c < length + 14; c++)
+                {
+                    Console.SetCursorPosition((x * 2) + 2, y + c);
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.Write("  ");
+                }
+            }
+            else
+            {
+                for (int c = 2; c < length + 2; c++)
+                {
+                    Console.SetCursorPosition((x + (c - 1)) * 2, y + 14);
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.Write("  ");
+                }
+            }
+
+        }
+
     }
 }
