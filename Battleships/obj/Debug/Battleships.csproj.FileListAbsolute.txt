@@ -4,3 +4,9 @@ c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\bi
 c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\obj\Debug\Battleships.csprojResolveAssemblyReference.cache
 c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\obj\Debug\Battleships.exe
 c:\users\samuel\documents\visual studio 2013\Projects\Battleships\Battleships\obj\Debug\Battleships.pdb
+C:\Users\samuel\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.exe.config
+C:\Users\samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.exe
+C:\Users\samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.pdb
+C:\Users\samuel\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.exe
+C:\Users\samuel\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.pdb
+C:\Users\samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.csprojResolveAssemblyReference.cache

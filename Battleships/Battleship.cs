@@ -10,7 +10,7 @@ namespace Battleships
     {
         string name;
         int[,] gridPositions;
-        int length;
+        public int length {get; set;}
         int[] status;
         bool destroyed;
 

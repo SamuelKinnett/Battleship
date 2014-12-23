@@ -64,9 +64,12 @@ namespace Battleships
         private void gameLoop()
         {
             bool exitGame = false;
+            rendering.DrawGameWindow();
+
             while (!exitGame) //main game loop
             {
-                rendering.DrawGameWindow();
+                rendering.DrawGameScreens(player);
+
                 Console.ReadLine();
             }
         }

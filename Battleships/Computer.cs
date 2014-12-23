@@ -18,6 +18,9 @@ namespace Battleships
             playerMap = new int[10, 10];
             ships = new Battleship[5];
 
+            Array.Clear(map, 0, map.Length);
+            Array.Clear(playerMap, 0, playerMap.Length);
+
             ships[0] = new Battleship("Aircraft Carrier", 5);
             ships[1] = new Battleship("Battleship", 4);
             ships[2] = new Battleship("Submarine", 3);

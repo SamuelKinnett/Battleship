@@ -11,7 +11,7 @@ namespace Battleships
         static void Main(string[] args)
         {
             Console.WindowWidth = 44;
-            Console.WindowHeight = 23;
+            Console.WindowHeight = 25;
             Console.Title = "Battleship";
             Console.CursorVisible = false;
 
