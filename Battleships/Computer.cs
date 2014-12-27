@@ -73,8 +73,9 @@ namespace Battleships
                                 map[shipX + c, shipY] = 1;
                             }
 
-                            ships[shipNumber].PlaceShip(shipX, shipY, vertical);
                         }
+                        ships[shipNumber].PlaceShip(shipX, shipY, vertical);
+                        shipPlaced = true;
                     }
                 }
             }
@@ -112,6 +113,17 @@ namespace Battleships
             return collision;
         }
 
+        public bool AllShipsDestroyed()
+        {
+            for (int shipNumber = 0; shipNumber < 5; shipNumber++)
+            {
+                if (ships[shipNumber].destroyed == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
     }
 }

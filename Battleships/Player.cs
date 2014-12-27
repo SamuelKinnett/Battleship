@@ -52,6 +52,14 @@ namespace Battleships
 
                 shipPlaced = false;
 
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(24, 2);
+                Console.Write("Place:");
+                Console.SetCursorPosition(24, 3);
+                Console.Write("                ");
+                Console.SetCursorPosition(24, 3);
+                Console.Write(ships[shipNumber].name);
+
                 //Broken code.
                 //rendering.UpdateLog("Place " + ships[shipNumber].name);
 
@@ -152,6 +160,11 @@ namespace Battleships
                     }
                 }
             }
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(24, 2);
+            Console.Write("      ");
+            Console.SetCursorPosition(24, 3);
+            Console.Write("                ");
         }
 
         /// <summary>
@@ -184,6 +197,18 @@ namespace Battleships
             }
 
             return collision;
+        }
+
+        public bool AllShipsDestroyed()
+        {
+            for (int shipNumber = 0; shipNumber < 5; shipNumber++)
+            {
+                if (ships[shipNumber].destroyed == false)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
     }

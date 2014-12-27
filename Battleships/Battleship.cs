@@ -12,7 +12,7 @@ namespace Battleships
         int[,] gridPositions;
         public int length {get; set;}
         int[] status; //1 = intct, 0 = destroyed.
-        bool destroyed;
+        public bool destroyed;
 
         public Battleship(string name, int length)
         {

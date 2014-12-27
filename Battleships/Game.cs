@@ -67,12 +67,23 @@ namespace Battleships
             rendering.DrawGameWindow();
             rendering.DrawGameScreens(player);
             player.PlaceShips();
+            computer.PlaceShips();
             while (!exitGame) //main game loop
             {
                 rendering.DrawGameScreens(player);
 
                 Console.ReadLine();
             }
+        }
+
+        private void PlayerVictory()
+        {
+
+        }
+
+        private void ComputerVictory()
+        {
+
         }
     }
 }
