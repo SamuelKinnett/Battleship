@@ -8,6 +8,14 @@ namespace Battleships
 {
     class Rendering
     {
+        string[] consoleLog;
+        int[] consoleLogColour;
+
+        public Rendering()
+        {
+            consoleLogColour = new int[4];
+            consoleLog = new string[4];
+        }
 
         /// <summary>
         /// This method draws the main game menu to the screen.
@@ -370,6 +378,55 @@ namespace Battleships
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Currently broken.
+        /// </summary>
+        /// <param name="textToWrite"></param>
+        public void UpdateLog(string textToWrite)
+        {
+            int numberOfLines = 0;
+            int stringLength = 0;
+            string[] newConsoleLog = new string[4];
+
+            stringLength = textToWrite.Length;
+            numberOfLines = stringLength / 20;
+
+            if (numberOfLines <= 4)
+            {
+                for(int c = 0; c < 4; c++)
+                {
+                    try
+                    {
+                        newConsoleLog[c + numberOfLines] = consoleLog[c];
+                        consoleLogColour[c + numberOfLines] = 1;
+                    }
+                    catch
+                    {
+                    }
+                }
+
+                for(int c = 0; c < numberOfLines; c++)
+                {
+                    newConsoleLog[c] = textToWrite.Substring(c * 20, 20);
+                    consoleLogColour[c] = 0;
+                }
+            }
+
+            for(int c = 0; c < 4; c++)
+            {
+                Console.SetCursorPosition(20, 1 + c);
+                Console.ForegroundColor = ConsoleColor.White;
+                if (consoleLogColour[c] == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
+                Console.Write(newConsoleLog[c]);
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+            consoleLog = newConsoleLog;
         }
 
     }

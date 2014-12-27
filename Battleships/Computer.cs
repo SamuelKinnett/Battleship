@@ -28,5 +28,90 @@ namespace Battleships
             ships[4] = new Battleship("Patrol Boat", 2);
         }
 
+        public void PlaceShips()
+        {
+            Random rand = new Random();
+
+            int length;
+            int shipX;
+            int shipY;
+            bool vertical = false;
+            bool shipPlaced;
+
+            for(int shipNumber = 0; shipNumber < 5; shipNumber++)
+            {
+                shipPlaced = false;
+                length = ships[shipNumber].length;
+
+                while (shipPlaced == false)
+                {
+                    if(rand.Next(0, 1) == 1)
+                    {
+                        vertical = true;
+                    }
+                    if (vertical == true)
+                    {
+                        shipX = rand.Next(0, 10);
+                        shipY = rand.Next(0, 10 - length);
+                    }
+                    else
+                    {
+                        shipX = rand.Next(0, 10 - length);
+                        shipY = rand.Next(0, 10);
+                    }
+                    
+                    if (ShipCollision(shipX, shipY, length, vertical) == false)
+                    {
+                        for (int c = 0; c < length; c++)
+                        {
+                            if (vertical)
+                            {
+                                map[shipX, shipY + c] = 1;
+                            }
+                            else
+                            {
+                                map[shipX + c, shipY] = 1;
+                            }
+
+                            ships[shipNumber].PlaceShip(shipX, shipY, vertical);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// This method returns true if the ships current placement would result in a collision with an existing ship.
+        /// </summary>
+        /// <param name="shipX"></param>
+        /// <param name="shipY"></param>
+        /// <param name="vertical"></param>
+        /// <returns></returns>
+        private bool ShipCollision(int shipX, int shipY, int shipLength, bool vertical)
+        {
+            bool collision = false;
+
+            for (int c = 0; c < shipLength; c++)
+            {
+                if (vertical)
+                {
+                    if (map[shipX, shipY + c] == 1)
+                    {
+                        collision = true;
+                    }
+                }
+                else
+                {
+                    if (map[shipX + c, shipY] == 1)
+                    {
+                        collision = true;
+                    }
+                }
+            }
+
+            return collision;
+        }
+
+
     }
 }

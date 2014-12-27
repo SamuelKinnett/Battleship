@@ -52,6 +52,9 @@ namespace Battleships
 
                 shipPlaced = false;
 
+                //Broken code.
+                //rendering.UpdateLog("Place " + ships[shipNumber].name);
+
                 while(!shipPlaced)
                 {
                     rendering.DrawGameScreens(this);
@@ -126,9 +129,62 @@ namespace Battleships
                                 }
                             }
                             break;
+
+                        case 13: //Enter key
+                            
+                            if (ShipCollision(shipX, shipY, shipLength, vertical) == false)
+                            {
+                                for (int c = 0; c < shipLength; c++)
+                                {
+                                    if(vertical)
+                                    {
+                                        map[shipX, shipY + c] = 1;
+                                    }
+                                    else
+                                    {
+                                        map[shipX + c, shipY] = 1;
+                                    }
+                                }
+                                ships[shipNumber].PlaceShip(shipX, shipY, vertical);
+                                shipPlaced = true;
+                            }
+                            break;
                     }
                 }
             }
         }
+
+        /// <summary>
+        /// This method returns true if the ships current placement would result in a collision with an existing ship.
+        /// </summary>
+        /// <param name="shipX"></param>
+        /// <param name="shipY"></param>
+        /// <param name="vertical"></param>
+        /// <returns></returns>
+        private bool ShipCollision(int shipX, int shipY, int shipLength, bool vertical)
+        {
+            bool collision = false;
+
+            for (int c = 0; c < shipLength; c++)
+            {
+                if (vertical)
+                {
+                    if (map[shipX, shipY + c] == 1)
+                    {
+                        collision = true;
+                    }
+                }
+                else
+                {
+                    if (map[shipX + c, shipY] == 1)
+                    {
+                        collision = true;
+                    }
+                }
+            }
+
+            return collision;
+        }
+
     }
 }
