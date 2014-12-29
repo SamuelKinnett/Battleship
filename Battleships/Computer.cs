@@ -8,15 +8,17 @@ namespace Battleships
 {
     class Computer
     {
-        int[,] map {get; set;}
-        int[,] playerMap {get; set;} //the players fleet known to the computer.
+        public int[,] map {get; set;}
+        public int[,] playerMap {get; set;} //the players fleet known to the computer.
         Battleship[] ships;
+        Rendering rendering;
 
         public Computer()
         {
             map = new int[10, 10];
             playerMap = new int[10, 10];
             ships = new Battleship[5];
+            rendering = new Rendering();
 
             Array.Clear(map, 0, map.Length);
             Array.Clear(playerMap, 0, playerMap.Length);
@@ -66,11 +68,11 @@ namespace Battleships
                         {
                             if (vertical)
                             {
-                                map[shipX, shipY + c] = 1;
+                                map[shipX, shipY + c] = shipNumber + 1; //this will be a unique identifier in order to allow quick lookups of hit ships.
                             }
                             else
                             {
-                                map[shipX + c, shipY] = 1;
+                                map[shipX + c, shipY] = shipNumber + 1; //this will be a unique identifier in order to allow quick lookups of hit ships.
                             }
 
                         }
@@ -96,14 +98,14 @@ namespace Battleships
             {
                 if (vertical)
                 {
-                    if (map[shipX, shipY + c] == 1)
+                    if (map[shipX, shipY + c] == 1) //if the map square contains a ship
                     {
                         collision = true;
                     }
                 }
                 else
                 {
-                    if (map[shipX + c, shipY] == 1)
+                    if (map[shipX + c, shipY] == 1) //if the map square contains a ship
                     {
                         collision = true;
                     }
@@ -113,6 +115,10 @@ namespace Battleships
             return collision;
         }
 
+        /// <summary>
+        /// This method returns true if all of the Computer's ships have been destroyed.
+        /// </summary>
+        /// <returns></returns>
         public bool AllShipsDestroyed()
         {
             for (int shipNumber = 0; shipNumber < 5; shipNumber++)
@@ -125,5 +131,33 @@ namespace Battleships
             return true;
         }
 
+        /// <summary>
+        /// This method handles hits, determining which ships, if any, were hit and updating the instances accordingly.
+        /// </summary>
+        /// <param name="posX"></param>
+        /// <param name="posY"></param>
+        public void SquareHit(int posX, int posY, Player player)
+        {
+            int hitShipID;
+            if (map[posX, posY] != 0) //if the map square is a ship.
+            {
+                hitShipID = map[posX, posY] - 1;
+                if (ships[hitShipID].ShipHit() == 0)
+                {
+                    rendering.UpdateLog("Your shot hits!");
+                    player.enemyMap[posX, posY] = 2;
+                }
+                else
+                {
+                    rendering.UpdateLog(ships[hitShipID].name + " destroyed!");
+                    player.enemyMap[posX, posY] = 2;
+                }
+            }
+            else
+            {
+                rendering.UpdateLog("Your shot misses!");
+                player.enemyMap[posX, posY] = 1;
+            }
+        }
     }
 }

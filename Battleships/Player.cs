@@ -11,12 +11,14 @@ namespace Battleships
         public int[,] map {get; set;}
         public int[,] enemyMap {get; set;} //the map of the enemy fleet known to the player. 
         Battleship[] ships;
+        Rendering rendering;
 
         public Player()
         {
             map = new int[10, 10];
             enemyMap = new int[10, 10];
             ships = new Battleship[5];
+            rendering = new Rendering();
 
             Array.Clear(map, 0, map.Length);
             Array.Clear(enemyMap, 0, enemyMap.Length);
@@ -53,15 +55,17 @@ namespace Battleships
                 shipPlaced = false;
 
                 Console.BackgroundColor = ConsoleColor.Black;
-                Console.SetCursorPosition(24, 2);
-                Console.Write("Place:");
-                Console.SetCursorPosition(24, 3);
-                Console.Write("                ");
-                Console.SetCursorPosition(24, 3);
-                Console.Write(ships[shipNumber].name);
+                //Console.SetCursorPosition(24, 2);
+                //Console.Write("Place:");
+                //Console.SetCursorPosition(24, 3);
+                //Console.Write("                ");
+                //Console.SetCursorPosition(24, 3);
+                //Console.Write(ships[shipNumber].name);
+                Console.SetCursorPosition(23, 5);
+                Console.Write("(use arrows + space)");
 
-                //Broken code.
-                //rendering.UpdateLog("Place " + ships[shipNumber].name);
+                //(hopefully not) Broken code.
+                rendering.UpdateLog("Place " + ships[shipNumber].name);
 
                 while(!shipPlaced)
                 {
@@ -138,7 +142,7 @@ namespace Battleships
                             }
                             break;
 
-                        case 13: //Enter key
+                        case 32: //Space bar
                             
                             if (ShipCollision(shipX, shipY, shipLength, vertical) == false)
                             {
@@ -146,11 +150,11 @@ namespace Battleships
                                 {
                                     if(vertical)
                                     {
-                                        map[shipX, shipY + c] = 1;
+                                        map[shipX, shipY + c] = shipNumber + 1; //this will be a unique identifier in order to allow quick lookups of hit ships.
                                     }
                                     else
                                     {
-                                        map[shipX + c, shipY] = 1;
+                                        map[shipX + c, shipY] = shipNumber + 1; //this will be a unique identifier in order to allow quick lookups of hit ships.
                                     }
                                 }
                                 ships[shipNumber].PlaceShip(shipX, shipY, vertical);
@@ -160,11 +164,14 @@ namespace Battleships
                     }
                 }
             }
+            rendering.UpdateLog("All ships placed!");
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.SetCursorPosition(24, 2);
-            Console.Write("      ");
-            Console.SetCursorPosition(24, 3);
-            Console.Write("                ");
+            //Console.SetCursorPosition(24, 2);
+            //Console.Write("       ");
+            //Console.SetCursorPosition(24, 3);
+            //Console.Write("                ");
+            Console.SetCursorPosition(23, 5);
+            Console.Write("                    ");
         }
 
         /// <summary>
@@ -199,6 +206,10 @@ namespace Battleships
             return collision;
         }
 
+        /// <summary>
+        /// This method returns true if all of the player's ships have been destroyed.
+        /// </summary>
+        /// <returns></returns>
         public bool AllShipsDestroyed()
         {
             for (int shipNumber = 0; shipNumber < 5; shipNumber++)
@@ -209,6 +220,40 @@ namespace Battleships
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// This method handles hits, determining which ships, if any, were hit and updating the instances accordingly. It will return a 0 if no ships were destroyed and a 1 if some were.
+        /// </summary>
+        /// <param name="posX"></param>
+        /// <param name="posY"></param>
+        public int SquareHit(int posX, int posY, Computer computer)
+        {
+            int hitShipID;
+            if (map[posX, posY] != 0) //if the map square is a ship.
+            {
+                hitShipID = map[posX, posY] - 1;
+                if (ships[hitShipID].ShipHit() == 0)
+                {
+                    rendering.UpdateLog("The enemy shot hits!");
+                    computer.playerMap[posX, posY] = 2;
+                    map[posX, posY] = 7;
+                    return 0;
+                }
+                else
+                {
+                    rendering.UpdateLog(ships[hitShipID].name + " destroyed!");
+                    computer.playerMap[posX, posY] = 2;
+                    map[posX, posY] = 7;
+                    return 1;
+                }
+            }
+            else
+            {
+                rendering.UpdateLog("The enemy shot misses!");
+                map[posX, posY] = 8;
+                return 0;
+            }
         }
 
     }

@@ -13,8 +13,8 @@ namespace Battleships
 
         public Rendering()
         {
-            consoleLogColour = new int[4];
-            consoleLog = new string[4];
+            consoleLogColour = new int[17];
+            consoleLog = new string[17];
         }
 
         /// <summary>
@@ -170,21 +170,21 @@ namespace Battleships
                             }
                             break;
 
-                        case 1: //Ship
-                            Console.BackgroundColor = ConsoleColor.Gray;
-                            Console.Write("  ");
-                            break;
-
-                        case 2: //Destroyed Ship
+                        case 7: //Destroyed Ship
                             Console.BackgroundColor = ConsoleColor.Gray;
                             Console.ForegroundColor = ConsoleColor.Blue;
                             Console.Write("▒▒");
                             break;
 
-                        case 3: //Previously hit location
+                        case 8: //Previously hit location
                             Console.ForegroundColor = ConsoleColor.DarkBlue;
                             Console.BackgroundColor = ConsoleColor.Black;
                             Console.Write("▒▒");
+                            break;
+
+                        default: //Ship
+                            Console.BackgroundColor = ConsoleColor.Gray;
+                            Console.Write("  ");
                             break;
                     }
                 }
@@ -381,52 +381,66 @@ namespace Battleships
         }
 
         /// <summary>
-        /// Currently broken.
+        /// This method updates the event log in the console.
         /// </summary>
         /// <param name="textToWrite"></param>
         public void UpdateLog(string textToWrite)
         {
             int numberOfLines = 0;
             int stringLength = 0;
-            string[] newConsoleLog = new string[4];
+            string[] newConsoleLog = new string[17];
+            string remainingString;
 
             stringLength = textToWrite.Length;
-            numberOfLines = stringLength / 20;
-
-            if (numberOfLines <= 4)
+            numberOfLines = (int)Math.Ceiling(stringLength / (double)20);
+            remainingString = textToWrite;
+            
+            for (int c = 0; c < numberOfLines; c++)
             {
-                for(int c = 0; c < 4; c++)
-                {
-                    try
-                    {
-                        newConsoleLog[c + numberOfLines] = consoleLog[c];
-                        consoleLogColour[c + numberOfLines] = 1;
-                    }
-                    catch
-                    {
-                    }
-                }
 
-                for(int c = 0; c < numberOfLines; c++)
+                if (remainingString.Length > 20)
                 {
-                    newConsoleLog[c] = textToWrite.Substring(c * 20, 20);
-                    consoleLogColour[c] = 0;
+                    newConsoleLog[c] = textToWrite.Substring((c * 20), 20); //take off a 20 character chunk and add it to the log.
+                    remainingString = textToWrite.Substring(stringLength - (stringLength - ((c + 1) * 20)), stringLength - ((c + 1) * 20)); //calculate the remaining string to write.
                 }
+                else
+                {
+                    newConsoleLog[c] = textToWrite.Substring((c * 20), remainingString.Length); //add the remaining string to the log.
+                    for (int count = remainingString.Length; count < 20; count++)
+                    {
+                        newConsoleLog[c] += " "; //pad the remaining space with spaces (heh) to 'erase' the previous log beneath.
+                    }
+                }
+                consoleLogColour[c] = 1; //white
             }
 
-            for(int c = 0; c < 4; c++)
+            int originalCount = 0; //the index in the old log.
+
+            for (int c = numberOfLines; c < 17; c++)
             {
-                Console.SetCursorPosition(20, 1 + c);
-                Console.ForegroundColor = ConsoleColor.White;
+                newConsoleLog[c] = consoleLog[originalCount];
+                consoleLogColour[c] = 0; //grey
+                originalCount++;
+            }
+
+            for (int c = 0; c < 17; c++)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(23, 7 + c);
                 if (consoleLogColour[c] == 1)
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                }
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
                 Console.Write(newConsoleLog[c]);
             }
-
-            Console.ForegroundColor = ConsoleColor.White;
-            consoleLog = newConsoleLog;
+            Array.Copy(newConsoleLog, consoleLog, newConsoleLog.Length);
+            Console.SetCursorPosition(0, 0);
         }
 
     }
