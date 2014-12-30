@@ -11,14 +11,12 @@ namespace Battleships
         public int[,] map {get; set;}
         public int[,] playerMap {get; set;} //the players fleet known to the computer.
         Battleship[] ships;
-        Rendering rendering;
 
         public Computer()
         {
             map = new int[10, 10];
             playerMap = new int[10, 10];
             ships = new Battleship[5];
-            rendering = new Rendering();
 
             Array.Clear(map, 0, map.Length);
             Array.Clear(playerMap, 0, playerMap.Length);
@@ -98,14 +96,14 @@ namespace Battleships
             {
                 if (vertical)
                 {
-                    if (map[shipX, shipY + c] == 1) //if the map square contains a ship
+                    if (map[shipX, shipY + c] != 0) //if the map square contains a ship
                     {
                         collision = true;
                     }
                 }
                 else
                 {
-                    if (map[shipX + c, shipY] == 1) //if the map square contains a ship
+                    if (map[shipX + c, shipY] != 0) //if the map square contains a ship
                     {
                         collision = true;
                     }
@@ -136,7 +134,7 @@ namespace Battleships
         /// </summary>
         /// <param name="posX"></param>
         /// <param name="posY"></param>
-        public void SquareHit(int posX, int posY, Player player)
+        public void SquareHit(int posX, int posY, Player player, Rendering rendering)
         {
             int hitShipID;
             if (map[posX, posY] != 0) //if the map square is a ship.

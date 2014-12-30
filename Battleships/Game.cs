@@ -66,13 +66,21 @@ namespace Battleships
             bool exitGame = false;
             rendering.DrawGameWindow();
             rendering.DrawGameScreens(player);
-            player.PlaceShips();
+            player.PlaceShips(rendering);
             computer.PlaceShips();
             while (!exitGame) //main game loop
             {
+                if(player.AllShipsDestroyed())
+                {
+                    ComputerVictory();
+                }
+                if(computer.AllShipsDestroyed())
+                {
+                    PlayerVictory();
+                }
                 rendering.DrawGameScreens(player);
-
-                Console.ReadLine();
+                player.TakeShot(computer, rendering);
+                System.Threading.Thread.Sleep(1000);
             }
         }
 

@@ -11,14 +11,12 @@ namespace Battleships
         public int[,] map {get; set;}
         public int[,] enemyMap {get; set;} //the map of the enemy fleet known to the player. 
         Battleship[] ships;
-        Rendering rendering;
 
         public Player()
         {
             map = new int[10, 10];
             enemyMap = new int[10, 10];
             ships = new Battleship[5];
-            rendering = new Rendering();
 
             Array.Clear(map, 0, map.Length);
             Array.Clear(enemyMap, 0, enemyMap.Length);
@@ -33,7 +31,7 @@ namespace Battleships
         /// <summary>
         /// This method allows the player to place their ships in their grid.
         /// </summary>
-        public void PlaceShips()
+        public void PlaceShips(Rendering rendering)
         {
             int shipLength;
             int shipOldX;
@@ -43,7 +41,6 @@ namespace Battleships
             int userInput;
             bool shipPlaced;
             bool vertical;
-            Rendering rendering = new Rendering();
 
             for(int shipNumber = 0; shipNumber < 5; shipNumber++)
             {
@@ -189,14 +186,14 @@ namespace Battleships
             {
                 if (vertical)
                 {
-                    if (map[shipX, shipY + c] == 1)
+                    if (map[shipX, shipY + c] != 0)
                     {
                         collision = true;
                     }
                 }
                 else
                 {
-                    if (map[shipX + c, shipY] == 1)
+                    if (map[shipX + c, shipY] != 0)
                     {
                         collision = true;
                     }
@@ -227,7 +224,7 @@ namespace Battleships
         /// </summary>
         /// <param name="posX"></param>
         /// <param name="posY"></param>
-        public int SquareHit(int posX, int posY, Computer computer)
+        public int SquareHit(int posX, int posY, Computer computer, Rendering rendering)
         {
             int hitShipID;
             if (map[posX, posY] != 0) //if the map square is a ship.
@@ -253,6 +250,77 @@ namespace Battleships
                 rendering.UpdateLog("The enemy shot misses!");
                 map[posX, posY] = 8;
                 return 0;
+            }
+        }
+
+        /// <summary>
+        /// This method handles the player making a shot on the enemy ships.
+        /// </summary>
+        public void TakeShot(Computer computer, Rendering rendering)
+        {
+            int xSelection = 0;
+            int ySelection = 0;
+            bool shotFired = false;
+            int userInput;
+
+            while(shotFired == false)
+            {
+                rendering.DrawGameScreens(this);
+                rendering.UpdateLog("Select Target");
+
+                bool innerLoop = true;
+
+                while(innerLoop)
+                {
+                    userInput = (int)Console.ReadKey(true).Key;
+                    if(userInput < 75 && userInput > 64) //if the key pressed is a to j
+                    {
+                        xSelection = userInput - 65; //converts the keycode to an x co-ordinate;
+                        innerLoop = false;
+                    }
+                }
+
+                rendering.DrawTarget(this, xSelection);
+                innerLoop = true;
+
+                while(innerLoop)
+                {
+                    userInput = (int)Console.ReadKey(true).Key;
+                    if (userInput < 58 && userInput > 47) //if the key pressed is 0 to 9
+                    {
+                        ySelection = userInput - 48;
+                        innerLoop = false;
+                    }
+                }
+
+                rendering.DrawTarget(this, xSelection, ySelection);
+                rendering.UpdateLog("Ready to Fire");
+                innerLoop = true;
+
+                while (innerLoop)
+                {
+                    userInput = (int)Console.ReadKey(true).Key;
+
+                    if (userInput == 32 || userInput == 13) //spacebar or enter
+                    {
+                        if (enemyMap[xSelection, ySelection] != 0)
+                        {
+                            rendering.UpdateLog("Error: You've already fired at that square!");
+                        }
+                        else
+                        {
+                            computer.SquareHit(xSelection, ySelection, this, rendering);
+                            shotFired = true;
+                        }
+                        innerLoop = false;
+                    }
+                    else if (userInput == 8) //backspace
+                    {
+                        rendering.UpdateLog("Shot cancelled");
+                        System.Threading.Thread.Sleep(1000);
+                        innerLoop = false;
+                    }
+                }
             }
         }
 

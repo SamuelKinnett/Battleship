@@ -84,9 +84,9 @@ namespace Battleships
                 if(x % 2 == 1)
                 {
                     Console.SetCursorPosition(1, x + 1);
-                    Console.Write(x);
+                    Console.Write(x - 1);
                     Console.SetCursorPosition(1, x + 13);
-                    Console.Write(x);
+                    Console.Write(x - 1);
                 }
             }
 
@@ -101,20 +101,10 @@ namespace Battleships
                 Console.Write((char)(64 + x) + " ");
                 if (x % 2 == 0)
                 {
-                    if (x == 10)
-                    {
-                        Console.SetCursorPosition(1, x + 1);
-                        Console.Write("A");
-                        Console.SetCursorPosition(1, x + 13);
-                        Console.Write("A");
-                    }
-                    else
-                    {
-                        Console.SetCursorPosition(1, x + 1);
-                        Console.Write(x);
-                        Console.SetCursorPosition(1, x + 13);
-                        Console.Write(x);
-                    }
+                    Console.SetCursorPosition(1, x + 1);
+                    Console.Write(x - 1);
+                    Console.SetCursorPosition(1, x + 13);
+                    Console.Write(x - 1);
                 }
             }
 
@@ -434,8 +424,16 @@ namespace Battleships
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.BackgroundColor = ConsoleColor.Black;
+                    if (c < 10)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.BackgroundColor = ConsoleColor.Black;
+                    }
                 }
                 Console.Write(newConsoleLog[c]);
             }
@@ -443,5 +441,33 @@ namespace Battleships
             Console.SetCursorPosition(0, 0);
         }
 
+        /// <summary>
+        /// Draws a line to show the X column selected.
+        /// </summary>
+        /// <param name="x"></param>
+        public void DrawTarget(Player player, int x)
+        {
+            DrawComputerShips(player);
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            for (int c = 2; c < 12; c++)
+            {
+                Console.SetCursorPosition((x + 1) * 2 , c);
+                Console.Write("  ");
+            }
+            Console.BackgroundColor = ConsoleColor.Black;
+        }
+
+        /// <summary>
+        /// Draws a square over the sqaure that has been targeted.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void DrawTarget(Player player, int x, int y)
+        {
+            DrawComputerShips(player);
+            Console.BackgroundColor = ConsoleColor.Yellow;
+            Console.SetCursorPosition((x + 1) * 2, 2 + y);
+            Console.Write("  ");
+        }
     }
 }
