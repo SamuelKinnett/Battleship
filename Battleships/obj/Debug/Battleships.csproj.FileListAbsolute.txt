@@ -10,3 +10,5 @@ C:\Users\samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.pd
 C:\Users\samuel\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.exe
 C:\Users\samuel\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.pdb
 C:\Users\samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.csprojResolveAssemblyReference.cache
+C:\Users\Samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.Properties.Resources.resources
+C:\Users\Samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.csproj.GenerateResource.Cache

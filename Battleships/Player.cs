@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Media;
 
 namespace Battleships
 {
@@ -42,12 +44,19 @@ namespace Battleships
             bool shipPlaced;
             bool vertical;
 
+            Stream beep = Battleships.Properties.Resources.SelectionSound;
+            Stream select = Battleships.Properties.Resources.SelectionConfirm;
+            Stream error = Battleships.Properties.Resources.Error;
+            SoundPlayer beepPlayer = new SoundPlayer(beep);
+            SoundPlayer selectPlayer = new SoundPlayer(select);
+            SoundPlayer errorPlayer = new SoundPlayer(error);
+
             for(int shipNumber = 0; shipNumber < 5; shipNumber++)
             {
                 shipLength = ships[shipNumber].length;
                 shipX = 0;
                 shipY = 0;
-                vertical = true;;
+                vertical = true;
 
                 shipPlaced = false;
 
@@ -70,6 +79,7 @@ namespace Battleships
                     rendering.DrawShipPlacement(shipX, shipY, shipLength, vertical);
 
                     userInput = (int)Console.ReadKey(true).Key;
+                    beepPlayer.Play();
 
                     switch(userInput)
                     {
@@ -143,6 +153,7 @@ namespace Battleships
                             
                             if (ShipCollision(shipX, shipY, shipLength, vertical) == false)
                             {
+                                selectPlayer.Play(); //play selection sound
                                 for (int c = 0; c < shipLength; c++)
                                 {
                                     if(vertical)
@@ -157,6 +168,10 @@ namespace Battleships
                                 ships[shipNumber].PlaceShip(shipX, shipY, vertical);
                                 shipPlaced = true;
                             }
+                            else
+                            {
+                                errorPlayer.Play();
+                            }
                             break;
                     }
                 }
@@ -169,6 +184,13 @@ namespace Battleships
             //Console.Write("                ");
             Console.SetCursorPosition(23, 5);
             Console.Write("                    ");
+
+            beep.Dispose();
+            beepPlayer.Dispose();
+            select.Dispose();
+            selectPlayer.Dispose();
+            error.Dispose();
+            errorPlayer.Dispose();
         }
 
         /// <summary>
@@ -263,6 +285,18 @@ namespace Battleships
             bool shotFired = false;
             int userInput;
 
+            Stream select = Battleships.Properties.Resources.SelectionSound;
+            Stream confirm = Battleships.Properties.Resources.SelectionConfirm;
+            Stream cancel = Battleships.Properties.Resources.SelectionCancel;
+            Stream missile = Battleships.Properties.Resources.Missile;
+            Stream error = Battleships.Properties.Resources.Error;
+
+            SoundPlayer selectPlayer = new SoundPlayer(select);
+            SoundPlayer confirmPlayer = new SoundPlayer(confirm);
+            SoundPlayer cancelPlayer = new SoundPlayer(cancel);
+            SoundPlayer missilePlayer = new SoundPlayer(missile);
+            SoundPlayer errorPlayer = new SoundPlayer(error);
+
             while(shotFired == false)
             {
                 rendering.DrawGameScreens(this);
@@ -275,6 +309,7 @@ namespace Battleships
                     userInput = (int)Console.ReadKey(true).Key;
                     if(userInput < 75 && userInput > 64) //if the key pressed is a to j
                     {
+                        selectPlayer.Play();
                         xSelection = userInput - 65; //converts the keycode to an x co-ordinate;
                         innerLoop = false;
                     }
@@ -288,6 +323,7 @@ namespace Battleships
                     userInput = (int)Console.ReadKey(true).Key;
                     if (userInput < 58 && userInput > 47) //if the key pressed is 0 to 9
                     {
+                        selectPlayer.Play();
                         ySelection = userInput - 48;
                         innerLoop = false;
                     }
@@ -305,10 +341,13 @@ namespace Battleships
                     {
                         if (enemyMap[xSelection, ySelection] != 0)
                         {
+                            errorPlayer.Play();
                             rendering.UpdateLog("Error: You've already fired at that square!");
                         }
                         else
                         {
+                            missilePlayer.Play();
+                            System.Threading.Thread.Sleep(500);
                             computer.SquareHit(xSelection, ySelection, this, rendering);
                             shotFired = true;
                         }
@@ -316,12 +355,25 @@ namespace Battleships
                     }
                     else if (userInput == 8) //backspace
                     {
+                        cancelPlayer.Play();
                         rendering.UpdateLog("Shot cancelled");
                         System.Threading.Thread.Sleep(1000);
                         innerLoop = false;
                     }
                 }
             }
+
+            select.Dispose();
+            selectPlayer.Dispose();
+            confirm.Dispose();
+            confirmPlayer.Dispose();
+            cancel.Dispose();
+            cancelPlayer.Dispose();
+            missile.Dispose();
+            missilePlayer.Dispose();
+            error.Dispose();
+            errorPlayer.Dispose();
+
         }
 
     }

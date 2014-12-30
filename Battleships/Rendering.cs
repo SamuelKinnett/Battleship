@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Media;
 
 namespace Battleships
 {
@@ -381,10 +383,14 @@ namespace Battleships
             string[] newConsoleLog = new string[17];
             string remainingString;
 
+            Stream updateSound = Battleships.Properties.Resources.Beep;
+            SoundPlayer updateSoundPlayer = new SoundPlayer(updateSound);
+
             stringLength = textToWrite.Length;
             numberOfLines = (int)Math.Ceiling(stringLength / (double)20);
             remainingString = textToWrite;
-            
+
+            //updateSoundPlayer.Play(); //A tad annoying.
             for (int c = 0; c < numberOfLines; c++)
             {
 
@@ -439,6 +445,9 @@ namespace Battleships
             }
             Array.Copy(newConsoleLog, consoleLog, newConsoleLog.Length);
             Console.SetCursorPosition(0, 0);
+
+            updateSound.Dispose();
+            updateSoundPlayer.Dispose();
         }
 
         /// <summary>

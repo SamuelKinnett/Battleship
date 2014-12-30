@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Media;
 
 namespace Battleships
 {
@@ -137,16 +139,26 @@ namespace Battleships
         public void SquareHit(int posX, int posY, Player player, Rendering rendering)
         {
             int hitShipID;
+            Stream explosion = Battleships.Properties.Resources.Explosion;
+            SoundPlayer explosionPlayer = new SoundPlayer(explosion);
+
             if (map[posX, posY] != 0) //if the map square is a ship.
             {
                 hitShipID = map[posX, posY] - 1;
                 if (ships[hitShipID].ShipHit() == 0)
                 {
+                    explosionPlayer.Play();
                     rendering.UpdateLog("Your shot hits!");
                     player.enemyMap[posX, posY] = 2;
                 }
                 else
                 {
+                    explosionPlayer.Play();
+                    System.Threading.Thread.Sleep(150);
+                    explosionPlayer.Play();
+                    System.Threading.Thread.Sleep(150);
+                    explosionPlayer.Play();
+                    System.Threading.Thread.Sleep(150);
                     rendering.UpdateLog(ships[hitShipID].name + " destroyed!");
                     player.enemyMap[posX, posY] = 2;
                 }

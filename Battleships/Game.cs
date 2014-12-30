@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Media;
 
 namespace Battleships
 {
@@ -21,11 +23,15 @@ namespace Battleships
 
         public void Run()
         {
-            bool programLoop = true; 
+            Stream exitMenuSound = Battleships.Properties.Resources.Missile;
+            SoundPlayer soundPlayer;
+            bool programLoop = true;
 
+            soundPlayer = new SoundPlayer(exitMenuSound);
             while(programLoop)
             {
                 mainMenu();
+                soundPlayer.Play();
                 gameLoop();
             }
         }
@@ -35,8 +41,12 @@ namespace Battleships
         /// </summary>
         private void mainMenu()
         {
+            SoundPlayer soundPlayer;
+            Stream mainMenuTheme = Battleships.Properties.Resources.Battleships;
             int userInput;
 
+            soundPlayer = new SoundPlayer(mainMenuTheme);
+            soundPlayer.PlayLooping();
             bool exitMenu = false;
             rendering.DrawMenu();
             while (!exitMenu)
@@ -46,6 +56,7 @@ namespace Battleships
                 {
                     case (65): //a
                         exitMenu = true;
+                        soundPlayer.Stop();
                         break;
 
                     case (66): //b
@@ -56,6 +67,9 @@ namespace Battleships
                         break;
                 }
             }
+
+            mainMenuTheme.Dispose();
+            soundPlayer.Dispose();
         }
 
         /// <summary>
