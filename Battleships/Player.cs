@@ -249,7 +249,7 @@ namespace Battleships
         public int SquareHit(int posX, int posY, Computer computer, Rendering rendering)
         {
             int hitShipID;
-            if (map[posX, posY] != 0) //if the map square is a ship.
+            if (map[posX, posY] != 0 && map[posX, posY] < 6) //if the map square is a ship.
             {
                 hitShipID = map[posX, posY] - 1;
                 if (ships[hitShipID].ShipHit() == 0)
@@ -270,6 +270,7 @@ namespace Battleships
             else
             {
                 rendering.UpdateLog("The enemy shot misses!");
+                computer.playerMap[posX, posY] = 1;
                 map[posX, posY] = 8;
                 return 0;
             }

@@ -95,6 +95,8 @@ namespace Battleships
                 rendering.DrawGameScreens(player);
                 player.TakeShot(computer, rendering);
                 System.Threading.Thread.Sleep(1000);
+                computer.TakeShot(player, rendering);
+                System.Threading.Thread.Sleep(1000);
             }
         }
 

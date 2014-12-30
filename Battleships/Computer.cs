@@ -13,12 +13,14 @@ namespace Battleships
         public int[,] map {get; set;}
         public int[,] playerMap {get; set;} //the players fleet known to the computer.
         Battleship[] ships;
+        bool Hunting;
 
         public Computer()
         {
             map = new int[10, 10];
             playerMap = new int[10, 10];
             ships = new Battleship[5];
+            Hunting = true;
 
             Array.Clear(map, 0, map.Length);
             Array.Clear(playerMap, 0, playerMap.Length);
@@ -169,5 +171,92 @@ namespace Battleships
                 player.enemyMap[posX, posY] = 1;
             }
         }
+
+        /// <summary>
+        /// This method handles the computer's turn.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="rendering"></param>
+        public void TakeShot(Player player, Rendering rendering)
+        {
+            int[,] possibilityMap;
+            int currentHighestX = 0;
+            int currentHighestY = 0;
+            int currentHighestScore = 0;
+            int tempScore = 0;
+
+            possibilityMap = CalculatepossiblePlacements();
+            
+            for(int x = 0; x < 10; x++)
+            {
+                for(int y = 0; y < 10; y++)
+                {
+                    tempScore = possibilityMap[x, y];
+                    if (tempScore > currentHighestScore)
+                    {
+                        currentHighestX = x;
+                        currentHighestY = y;
+                        currentHighestScore = tempScore;
+                    }
+                }
+            }
+
+            player.SquareHit(currentHighestX, currentHighestY, this, rendering);
+
+        }
+
+        /// <summary>
+        /// This method works out the number of times a tile could possibly be occupied by a ship.
+        /// </summary>
+        /// <param name="shipSize"></param>
+        /// <param name="possibilityMap"></param>
+        /// <returns></returns>
+        private int[,] CalculatepossiblePlacements()
+        {
+            //Vertical placement possibilities
+            int[,] possibilityMap = new int[10, 10];
+            Array.Clear(possibilityMap, 0, possibilityMap.Length);
+
+            for (int currentShipSize = 0; currentShipSize < 5; currentShipSize++)
+            {
+                for (int x = 0; x < 10; x++)
+                {
+                    for (int y = 0; y < 10 - currentShipSize; y++)
+                    {
+
+                        for (int c = 0; c < currentShipSize; c++)
+                        {
+                            if (ShipCollision(x, y, currentShipSize, true))
+                            {
+                                possibilityMap[x, y + c]++; //increment the value in the possibility map, indicating a ship could be here.
+                            }
+                        }
+
+                    }
+                }
+
+                //Horizontal placement possibilities
+
+                for (int x = 0; x < 10 - currentShipSize; x++)
+                {
+                    for (int y = 0; y < 10; y++)
+                    {
+
+                        for (int c = 0; c < currentShipSize; c++)
+                        {
+                            if (ShipCollision(x, y, currentShipSize, false))
+                            {
+                                possibilityMap[x + c, y]++; //increment the value in the possibility map, indicating a ship could be here.
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            return possibilityMap;
+
+        }
+
     }
 }
