@@ -11,16 +11,16 @@ namespace Battleships
     class Computer
     {
         public int[,] map {get; set;}
-        public int[,] playerMap {get; set;} //the players fleet known to the computer.
+        public int[,] playerMap {get; set;} //the players fleet known to the computer. A 0 indicates unknown space, a 1 indicates empty ocean, a 2 indicates a hit ship and a 3 indicates a destroyed ship.
         Battleship[] ships;
-        bool Hunting;
+        bool hunting;
 
         public Computer()
         {
             map = new int[10, 10];
             playerMap = new int[10, 10];
             ships = new Battleship[5];
-            Hunting = true;
+            hunting = true;
 
             Array.Clear(map, 0, map.Length);
             Array.Clear(playerMap, 0, playerMap.Length);
@@ -118,6 +118,72 @@ namespace Battleships
         }
 
         /// <summary>
+        /// This method checks to see if a hypothetical ship placement in the player grid would collide with a known ship.
+        /// </summary>
+        /// <param name="shipX"></param>
+        /// <param name="shipY"></param>
+        /// <param name="shipLength"></param>
+        /// <param name="vertical"></param>
+        /// <returns></returns>
+        private bool PlayerShipCollision(int shipX, int shipY, int shipLength, bool vertical)
+        {
+            bool collision = false;
+
+            for (int c = 0; c < shipLength; c++)
+            {
+                if (vertical)
+                {
+                    if (playerMap[shipX, shipY + c] == 2) //if the map square contains a ship
+                    {
+                        collision = true;
+                    }
+                }
+                else
+                {
+                    if (playerMap[shipX + c, shipY] == 2) //if the map square contains a ship
+                    {
+                        collision = true;
+                    }
+                }
+            }
+
+            return collision;
+        }
+
+        /// <summary>
+        /// This method checks to see if a hypothetical ship would collide with anything excpet unknown tiles.
+        /// </summary>
+        /// <param name="shipX"></param>
+        /// <param name="shipY"></param>
+        /// <param name="shipLength"></param>
+        /// <param name="vertical"></param>
+        /// <returns></returns>
+        private bool UnknownSpaceCollision(int shipX, int shipY, int shipLength, bool vertical)
+        {
+            bool collision = false;
+
+            for (int c = 0; c < shipLength; c++)
+            {
+                if (vertical)
+                {
+                    if (playerMap[shipX, shipY + c] != 0) //if the map square is not an unknown tile
+                    {
+                        collision = true;
+                    }
+                }
+                else
+                {
+                    if (playerMap[shipX + c, shipY] != 0) //if the map square is not an unknown tile
+                    {
+                        collision = true;
+                    }
+                }
+            }
+
+            return collision;
+        }
+
+        /// <summary>
         /// This method returns true if all of the Computer's ships have been destroyed.
         /// </summary>
         /// <returns></returns>
@@ -185,24 +251,58 @@ namespace Battleships
             int currentHighestScore = 0;
             int tempScore = 0;
 
-            possibilityMap = CalculatepossiblePlacements();
-            
-            for(int x = 0; x < 10; x++)
+            hunting = true;
+
+            for (int x = 0; x < 10; x++)
             {
-                for(int y = 0; y < 10; y++)
+                for (int y = 0; y < 10; y++)
                 {
-                    tempScore = possibilityMap[x, y];
-                    if (tempScore > currentHighestScore)
+                    if (playerMap[x, y] == 2) //if there is a hit ship that has not been fully destroyed...
                     {
-                        currentHighestX = x;
-                        currentHighestY = y;
-                        currentHighestScore = tempScore;
+                        hunting = false; //go into target mode
                     }
                 }
             }
 
-            player.SquareHit(currentHighestX, currentHighestY, this, rendering);
+            if (hunting)
+            {
+                possibilityMap = CalculatepossiblePlacements();
+            }
+            else
+            {
+                possibilityMap = CalculateTargetedPlacements();
+            }
 
+            //clear all previously fired on tiles just to be safe
+
+            for (int x = 0; x < 10; x++)
+            {
+                for(int y = 0; y < 10; y++)
+                {
+                    if (playerMap[x, y] != 0)
+                    {
+                        possibilityMap[x, y] = 0;
+                    }
+                }
+            }
+
+            //choose most likely location of the ship
+
+                for (int x = 0; x < 10; x++)
+                {
+                    for (int y = 0; y < 10; y++)
+                    {
+                        tempScore = possibilityMap[x, y];
+                        if (tempScore > currentHighestScore)
+                        {
+                            currentHighestX = x;
+                            currentHighestY = y;
+                            currentHighestScore = tempScore;
+                        }
+                    }
+                }
+
+            player.SquareHit(currentHighestX, currentHighestY, this, rendering);
         }
 
         /// <summary>
@@ -213,9 +313,10 @@ namespace Battleships
         /// <returns></returns>
         private int[,] CalculatepossiblePlacements()
         {
-            //Vertical placement possibilities
             int[,] possibilityMap = new int[10, 10];
             Array.Clear(possibilityMap, 0, possibilityMap.Length);
+
+            //Vertical placement possibilities
 
             for (int currentShipSize = 0; currentShipSize < 5; currentShipSize++)
             {
@@ -226,7 +327,7 @@ namespace Battleships
 
                         for (int c = 0; c < currentShipSize; c++)
                         {
-                            if (ShipCollision(x, y, currentShipSize, true))
+                            if (UnknownSpaceCollision(x, y, currentShipSize, true) == false)
                             {
                                 possibilityMap[x, y + c]++; //increment the value in the possibility map, indicating a ship could be here.
                             }
@@ -244,7 +345,7 @@ namespace Battleships
 
                         for (int c = 0; c < currentShipSize; c++)
                         {
-                            if (ShipCollision(x, y, currentShipSize, false))
+                            if (UnknownSpaceCollision(x, y, currentShipSize, false) == false)
                             {
                                 possibilityMap[x + c, y]++; //increment the value in the possibility map, indicating a ship could be here.
                             }
@@ -256,6 +357,57 @@ namespace Battleships
 
             return possibilityMap;
 
+        }
+
+        /// <summary>
+        /// This method is invoked when the AI knows the general location of a ship, to whittle down the remaining squares it occupies.
+        /// </summary>
+        /// <returns></returns>
+        private int[,] CalculateTargetedPlacements()
+        {
+            int[,] possibilityMap = new int[10, 10];
+            Array.Clear(possibilityMap, 0, possibilityMap.Length);
+
+            //Vertical placement possibilities
+
+            for (int currentShipSize = 0; currentShipSize < 5; currentShipSize++)
+            {
+                for (int x = 0; x < 10; x++)
+                {
+                    for (int y = 0; y < 10 - currentShipSize; y++)
+                    {
+
+                        for (int c = 0; c < currentShipSize; c++)
+                        {
+                            if (PlayerShipCollision(x, y, currentShipSize, true))
+                            {
+                                possibilityMap[x, y + c]++; //increment the value in the possibility map, indicating a ship could be here.
+                            }
+                        }
+
+                    }
+                }
+
+                //Horizontal placement possibilities
+
+                for (int x = 0; x < 10 - currentShipSize; x++)
+                {
+                    for (int y = 0; y < 10; y++)
+                    {
+
+                        for (int c = 0; c < currentShipSize; c++)
+                        {
+                            if (PlayerShipCollision(x, y, currentShipSize, false))
+                            {
+                                possibilityMap[x + c, y]++; //increment the value in the possibility map, indicating a ship could be here.
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            return possibilityMap;
         }
 
     }

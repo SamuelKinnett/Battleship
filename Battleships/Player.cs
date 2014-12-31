@@ -262,7 +262,11 @@ namespace Battleships
                 else
                 {
                     rendering.UpdateLog(ships[hitShipID].name + " destroyed!");
-                    computer.playerMap[posX, posY] = 2;
+                    for (int count = 0; count < ships[hitShipID].length; count++ )
+                    {
+                        computer.playerMap[ships[hitShipID].gridPositions[count, 0], ships[hitShipID].gridPositions[count, 1]] = 3; //Make it known to the computer that a ship has been destroyed.
+                    }
+                    //computer.playerMap[posX, posY] = 2;
                     map[posX, posY] = 7;
                     return 1;
                 }

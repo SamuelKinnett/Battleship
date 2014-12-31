@@ -9,7 +9,7 @@ namespace Battleships
     class Battleship
     {
         public string name;
-        int[,] gridPositions;
+        public int[,] gridPositions;
         public int length {get; set;}
         int health;
         public bool destroyed;
