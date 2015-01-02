@@ -249,33 +249,68 @@ namespace Battleships
         public int SquareHit(int posX, int posY, Computer computer, Rendering rendering)
         {
             int hitShipID;
+
+            Stream explosion = Battleships.Properties.Resources.Explosion;
+            Stream missile = Battleships.Properties.Resources.Missile;
+
+            SoundPlayer explosionPlayer = new SoundPlayer(explosion);
+            SoundPlayer missilePlayer = new SoundPlayer(missile);
+
+            missilePlayer.Play();
+            System.Threading.Thread.Sleep(500);
+
             if (map[posX, posY] != 0 && map[posX, posY] < 6) //if the map square is a ship.
             {
                 hitShipID = map[posX, posY] - 1;
                 if (ships[hitShipID].ShipHit() == 0)
                 {
-                    rendering.UpdateLog("The enemy shot hits!");
                     computer.playerMap[posX, posY] = 2;
                     map[posX, posY] = 7;
+                    explosionPlayer.Play();
+                    rendering.DrawGameScreens(this);
+                    rendering.UpdateLog("The enemy shot hits!");
+
+                    explosion.Dispose();
+                    missile.Dispose();
+                    explosionPlayer.Dispose();
+                    missilePlayer.Dispose();
                     return 0;
                 }
                 else
                 {
-                    rendering.UpdateLog(ships[hitShipID].name + " destroyed!");
                     for (int count = 0; count < ships[hitShipID].length; count++ )
                     {
                         computer.playerMap[ships[hitShipID].gridPositions[count, 0], ships[hitShipID].gridPositions[count, 1]] = 3; //Make it known to the computer that a ship has been destroyed.
                     }
                     //computer.playerMap[posX, posY] = 2;
                     map[posX, posY] = 7;
+                    rendering.DrawGameScreens(this);
+                    rendering.UpdateLog(ships[hitShipID].name + " destroyed!");
+                    explosionPlayer.Play();
+                    System.Threading.Thread.Sleep(150);
+                    explosionPlayer.Play();
+                    System.Threading.Thread.Sleep(150);
+                    explosionPlayer.Play();
+                    System.Threading.Thread.Sleep(150);
+
+                    explosion.Dispose();
+                    missile.Dispose();
+                    explosionPlayer.Dispose();
+                    missilePlayer.Dispose();
                     return 1;
                 }
             }
             else
             {
-                rendering.UpdateLog("The enemy shot misses!");
                 computer.playerMap[posX, posY] = 1;
                 map[posX, posY] = 8;
+                rendering.DrawGameScreens(this);
+                rendering.UpdateLog("The enemy shot misses!");
+
+                explosion.Dispose();
+                missile.Dispose();
+                explosionPlayer.Dispose();
+                missilePlayer.Dispose();
                 return 0;
             }
         }
@@ -379,6 +414,25 @@ namespace Battleships
             error.Dispose();
             errorPlayer.Dispose();
 
+        }
+
+        /// <summary>
+        /// This method returns the number of intact ships.
+        /// </summary>
+        /// <returns></returns>
+        public int remainingShips()
+        {
+            int totalShips = 0;
+
+            for (int currentShip = 0; currentShip < 5; currentShip++)
+            {
+                if (ships[currentShip].destroyed == false)
+                {
+                    totalShips++;
+                }
+            }
+
+            return totalShips;
         }
 
     }

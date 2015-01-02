@@ -10,6 +10,8 @@ namespace Battleships
 {
     class Game
     {
+        public int turn;
+
         Rendering rendering;
         Player player;
         Computer computer;
@@ -30,16 +32,16 @@ namespace Battleships
             soundPlayer = new SoundPlayer(exitMenuSound);
             while(programLoop)
             {
-                mainMenu();
+                MainMenu();
                 soundPlayer.Play();
-                gameLoop();
+                GameLoop();
             }
         }
 
         /// <summary>
         /// This method handles the main menu of the game.
         /// </summary>
-        private void mainMenu()
+        private void MainMenu()
         {
             SoundPlayer soundPlayer;
             Stream mainMenuTheme = Battleships.Properties.Resources.Battleships;
@@ -75,39 +77,37 @@ namespace Battleships
         /// <summary>
         /// This method handles the main game loop
         /// </summary>
-        private void gameLoop()
+        private void GameLoop()
         {
             bool exitGame = false;
             rendering.DrawGameWindow();
             rendering.DrawGameScreens(player);
             player.PlaceShips(rendering);
             computer.PlaceShips();
+            turn = 0;
             while (!exitGame) //main game loop
             {
-                if(player.AllShipsDestroyed())
-                {
-                    ComputerVictory();
-                }
-                if(computer.AllShipsDestroyed())
-                {
-                    PlayerVictory();
-                }
                 rendering.DrawGameScreens(player);
+                rendering.DrawInfoBox(player, computer, turn);
                 player.TakeShot(computer, rendering);
                 System.Threading.Thread.Sleep(1000);
                 computer.TakeShot(player, rendering);
                 System.Threading.Thread.Sleep(1000);
+                if (player.AllShipsDestroyed())
+                {
+                    rendering.DrawVictoryScreen(1);
+                    Console.ReadLine();
+                    exitGame = true;
+                }
+                if (computer.AllShipsDestroyed())
+                {
+                    rendering.DrawVictoryScreen(0);
+                    Console.ReadLine();
+                    exitGame = true;
+                }
+                turn++;
             }
         }
 
-        private void PlayerVictory()
-        {
-
-        }
-
-        private void ComputerVictory()
-        {
-
-        }
     }
 }

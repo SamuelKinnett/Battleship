@@ -209,13 +209,13 @@ namespace Battleships
                                 if (x % 2 == 1)
                                 {
                                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                                    Console.BackgroundColor = ConsoleColor.Black;
                                     Console.Write("??");
                                 }
                                 else
                                 {
                                     Console.ForegroundColor = ConsoleColor.White;
-                                    Console.BackgroundColor = ConsoleColor.Blue;
+                                    Console.BackgroundColor = ConsoleColor.DarkGray;
                                     Console.Write("??");
                                 }
                             }
@@ -224,13 +224,13 @@ namespace Battleships
                                 if (x % 2 == 0)
                                 {
                                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                                    Console.BackgroundColor = ConsoleColor.Black;
                                     Console.Write("??");
                                 }
                                 else
                                 {
                                     Console.ForegroundColor = ConsoleColor.White;
-                                    Console.BackgroundColor = ConsoleColor.Blue;
+                                    Console.BackgroundColor = ConsoleColor.DarkGray;
                                     Console.Write("??");
                                 }
                             }
@@ -478,5 +478,62 @@ namespace Battleships
             Console.SetCursorPosition((x + 1) * 2, 2 + y);
             Console.Write("  ");
         }
+
+        /// <summary>
+        /// This method draws a victory screen for the player (0) or the computer (1)
+        /// </summary>
+        /// <param name="winner"></param>
+        public void DrawVictoryScreen(int winner)
+        {
+            Console.Clear();
+
+            if (winner == 0) //Player victory
+            {
+                Console.WriteLine("You are victorious!");
+            }
+            else
+            {
+                Console.WriteLine("Your fleet has been wiped out...");
+            }
+
+        }
+
+        /// <summary>
+        /// This method draws information such as the remaining ships and the hit chance to the CUI.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="computer"></param>
+        /// <param name="turn"></param>
+        public void DrawInfoBox(Player player, Computer computer, int turn)
+        {
+            double hitChance = 0;
+            double remainingTargets = 0;
+            double remainingSquares = 0;
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(24, 1);
+            Console.Write("Remaining Ships:");
+            Console.SetCursorPosition(24, 2);
+            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.Write("You: " + player.remainingShips());
+            Console.SetCursorPosition(24, 3);
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.Write("CPU: " + computer.remainingShips());
+            Console.BackgroundColor = ConsoleColor.Black;
+
+            remainingSquares = 100 - turn;
+            for (int currentShip = 0; currentShip < 5; currentShip++)
+            {
+                remainingTargets += computer.ships[currentShip].health;
+            }
+
+            hitChance = Math.Round((double)((remainingTargets / remainingSquares) * 100), 1); //makes the hit chance nicer to look at and stops it from scrolling off the CUI.
+
+            Console.SetCursorPosition(24, 4);
+            Console.Write("Hit Chance: " + hitChance + "%");
+            Console.SetCursorPosition(0, 0);
+        }
+
     }
 }

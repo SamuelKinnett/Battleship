@@ -12,7 +12,7 @@ namespace Battleships
     {
         public int[,] map {get; set;}
         public int[,] playerMap {get; set;} //the players fleet known to the computer. A 0 indicates unknown space, a 1 indicates empty ocean, a 2 indicates a hit ship and a 3 indicates a destroyed ship.
-        Battleship[] ships;
+        public Battleship[] ships;
         bool hunting;
 
         public Computer()
@@ -118,16 +118,16 @@ namespace Battleships
         }
 
         /// <summary>
-        /// This method checks to see if a hypothetical ship placement in the player grid would collide with a known ship.
+        /// This method checks to see if a hypothetical ship placement in the player grid would collide with a known ship. It returns the number of ship tiles the placement collides with.
         /// </summary>
         /// <param name="shipX"></param>
         /// <param name="shipY"></param>
         /// <param name="shipLength"></param>
         /// <param name="vertical"></param>
         /// <returns></returns>
-        private bool PlayerShipCollision(int shipX, int shipY, int shipLength, bool vertical)
+        private int PlayerShipCollision(int shipX, int shipY, int shipLength, bool vertical)
         {
-            bool collision = false;
+            int numberOfCollisions = 0;
 
             for (int c = 0; c < shipLength; c++)
             {
@@ -135,19 +135,19 @@ namespace Battleships
                 {
                     if (playerMap[shipX, shipY + c] == 2) //if the map square contains a ship
                     {
-                        collision = true;
+                        numberOfCollisions++;
                     }
                 }
                 else
                 {
                     if (playerMap[shipX + c, shipY] == 2) //if the map square contains a ship
                     {
-                        collision = true;
+                        numberOfCollisions++;
                     }
                 }
             }
 
-            return collision;
+            return numberOfCollisions;
         }
 
         /// <summary>
@@ -379,9 +379,9 @@ namespace Battleships
 
                         for (int c = 0; c < currentShipSize; c++)
                         {
-                            if (PlayerShipCollision(x, y, currentShipSize, true))
+                            if (PlayerShipCollision(x, y, currentShipSize, true) > 0)
                             {
-                                possibilityMap[x, y + c]++; //increment the value in the possibility map, indicating a ship could be here.
+                                possibilityMap[x, y + c] += PlayerShipCollision(x, y, currentShipSize, true); //increment the value in the possibility map, indicating a ship could be here.
                             }
                         }
 
@@ -397,9 +397,9 @@ namespace Battleships
 
                         for (int c = 0; c < currentShipSize; c++)
                         {
-                            if (PlayerShipCollision(x, y, currentShipSize, false))
+                            if (PlayerShipCollision(x, y, currentShipSize, false) > 0)
                             {
-                                possibilityMap[x + c, y]++; //increment the value in the possibility map, indicating a ship could be here.
+                                possibilityMap[x + c, y] += PlayerShipCollision(x, y, currentShipSize, false); //increment the value in the possibility map, indicating a ship could be here.
                             }
                         }
 
@@ -408,6 +408,25 @@ namespace Battleships
             }
 
             return possibilityMap;
+        }
+
+        /// <summary>
+        /// This method returns the number of intact ships.
+        /// </summary>
+        /// <returns></returns>
+        public int remainingShips()
+        {
+            int totalShips = 0;
+
+            for (int currentShip = 0; currentShip < 5; currentShip++)
+            {
+                if (ships[currentShip].destroyed == false)
+                {
+                    totalShips++;
+                }
+            }
+
+            return totalShips;
         }
 
     }

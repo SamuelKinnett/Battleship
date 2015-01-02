@@ -11,7 +11,7 @@ namespace Battleships
         public string name;
         public int[,] gridPositions;
         public int length {get; set;}
-        int health;
+        public int health;
         public bool destroyed;
 
         public Battleship(string name, int length)
