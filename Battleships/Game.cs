@@ -51,6 +51,7 @@ namespace Battleships
             soundPlayer.PlayLooping();
             bool exitMenu = false;
             rendering.DrawMenu();
+            Console.BackgroundColor = ConsoleColor.Black;
             while (!exitMenu)
             {
                 userInput = (int)Console.ReadKey(true).Key; //returns the keycode for the key pressed by the user.
@@ -91,6 +92,7 @@ namespace Battleships
                 rendering.DrawInfoBox(player, computer, turn);
                 player.TakeShot(computer, rendering);
                 System.Threading.Thread.Sleep(1000);
+                rendering.DrawGameScreens(player);
                 computer.TakeShot(player, rendering);
                 System.Threading.Thread.Sleep(1000);
                 if (player.AllShipsDestroyed())

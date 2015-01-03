@@ -24,11 +24,56 @@ namespace Battleships
         /// </summary>
         public void DrawMenu()
         {
+            Console.BackgroundColor = ConsoleColor.Blue;
             Console.Clear();
-            Console.WriteLine("Main Menu");
-            Console.WriteLine();
-            Console.WriteLine("A - Start game");
+            DrawTitle();
+            Console.SetCursorPosition(6, 10);
+            Console.Write("A - Start game");
+            Console.SetCursorPosition(6, 12);
             Console.WriteLine("B - Exit");
+        }
+
+        /// <summary>
+        /// This method draws a fancy title for the menu
+        /// </summary>
+        private void DrawTitle()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(3, 2);
+            Console.Write("░██  ░█ ░███░███░█  ░███ ░██░█░█░█░██");
+            Console.SetCursorPosition(3, 3);
+            Console.Write("░█░█░█░█ ░█  ░█ ░█  ░█  ░█  ░█░█░█░█░█");
+            Console.SetCursorPosition(3, 4);
+            Console.Write("░██ ░███ ░█  ░█ ░█  ░██  ░█ ░███░█░██");
+            Console.SetCursorPosition(3, 5);
+            Console.Write("░█░█░█░█ ░█  ░█ ░█  ░█    ░█░█░█░█░█");
+            Console.SetCursorPosition(3, 6);
+            Console.Write("░██ ░█░█ ░█  ░█ ░███░███░██ ░█░█░█░█");
+            Console.SetCursorPosition(3, 8);
+            Console.Write("░█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀");
+
+            for(int y = 9; y < 22; y++)
+            {
+                Console.SetCursorPosition(3, y);
+                Console.WriteLine("░█");
+            }
+
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.SetCursorPosition(0, 23);
+            Console.WriteLine("                                            ");
+            Console.SetCursorPosition(0, 24);
+            Console.WriteLine("                                            ");
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition(17, 20);
+            Console.Write(" _▄ _▄   █████ ▄▬ ▄_  ");
+            Console.SetCursorPosition(17, 21);
+            Console.Write("▄▄█▄▄█▄█████████▄▄█▄▄▄");
+            Console.SetCursorPosition(18, 22);
+            Console.Write("▀██████████████████▀");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(0, 0);
         }
 
         /// <summary>
