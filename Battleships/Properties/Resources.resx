@@ -121,6 +121,12 @@
   <data name="Battleships" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Battleships.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="BattleshipsLoss" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BattleshipsLoss.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="BattleshipsVictory" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BattleshipsVictory.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Beep" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Beep.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

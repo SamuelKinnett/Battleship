@@ -530,16 +530,37 @@ namespace Battleships
         /// <param name="winner"></param>
         public void DrawVictoryScreen(int winner)
         {
+            Console.BackgroundColor = ConsoleColor.Blue;
             Console.Clear();
+
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.SetCursorPosition(0, 23);
+            Console.WriteLine("                                            ");
+            Console.SetCursorPosition(0, 24);
+            Console.WriteLine("                                            ");
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.SetCursorPosition(17, 20);
+            Console.Write(" _▄ _▄   █████ ▄▬ ▄_  ");
+            Console.SetCursorPosition(17, 21);
+            Console.Write("▄▄█▄▄█▄█████████▄▄█▄▄▄");
+            Console.SetCursorPosition(18, 22);
+            Console.Write("▀██████████████████▀");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(2, 2);
 
             if (winner == 0) //Player victory
             {
-                Console.WriteLine("You are victorious!");
+                Console.Write("You are victorious!");
             }
             else
             {
-                Console.WriteLine("Your fleet has been wiped out...");
+                Console.Write("Your fleet has been wiped out...");
             }
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.SetCursorPosition(0, 0);
 
         }
 

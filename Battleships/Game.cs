@@ -80,6 +80,8 @@ namespace Battleships
         /// </summary>
         private void GameLoop()
         {
+            Stream endMusic;
+            SoundPlayer soundPlayer;
             bool exitGame = false;
             rendering.DrawGameWindow();
             rendering.DrawGameScreens(player);
@@ -97,14 +99,26 @@ namespace Battleships
                 System.Threading.Thread.Sleep(1000);
                 if (player.AllShipsDestroyed())
                 {
+                    endMusic = Battleships.Properties.Resources.BattleshipsLoss;
+                    soundPlayer = new SoundPlayer(endMusic);
+                    soundPlayer.Play();
                     rendering.DrawVictoryScreen(1);
                     Console.ReadLine();
+                    soundPlayer.Stop();
+                    endMusic.Dispose();
+                    soundPlayer.Dispose();
                     exitGame = true;
                 }
                 if (computer.AllShipsDestroyed())
                 {
+                    endMusic = Battleships.Properties.Resources.BattleshipsVictory;
+                    soundPlayer = new SoundPlayer(endMusic);
+                    soundPlayer.Play();
                     rendering.DrawVictoryScreen(0);
                     Console.ReadLine();
+                    soundPlayer.Stop();
+                    endMusic.Dispose();
+                    soundPlayer.Dispose();
                     exitGame = true;
                 }
                 turn++;

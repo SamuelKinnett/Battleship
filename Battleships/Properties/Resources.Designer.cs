@@ -72,6 +72,24 @@ namespace Battleships.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream BattleshipsLoss {
+            get {
+                return ResourceManager.GetStream("BattleshipsLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream BattleshipsVictory {
+            get {
+                return ResourceManager.GetStream("BattleshipsVictory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream Beep {
             get {
                 return ResourceManager.GetStream("Beep", resourceCulture);
