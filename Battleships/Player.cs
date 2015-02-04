@@ -435,5 +435,24 @@ namespace Battleships
             return totalShips;
         }
 
+        /// <summary>
+        /// This returns an array with a 0 is the ship is destroyed and a 1 if the ship is alive.
+        /// </summary>
+        /// <returns></returns>
+        public int[] shipStatus()
+        {
+            int[] shipsAlive = new int[5] {0, 0, 0, 0, 0};
+
+            for (int shipCount = 0; shipCount < 5; shipCount++)
+            {
+                if (ships[shipCount].destroyed == false)
+                {
+                    shipsAlive[shipCount] = 1;
+                }
+            }
+
+            return shipsAlive;
+
+        }
     }
 }

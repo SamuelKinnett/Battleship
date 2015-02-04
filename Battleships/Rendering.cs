@@ -183,12 +183,12 @@ namespace Battleships
                                 {
                                     Console.ForegroundColor = ConsoleColor.Blue;
                                     Console.BackgroundColor = ConsoleColor.DarkBlue;
-                                    Console.Write("▒▒");
+                                    Console.Write("  ");
                                 }
                                 else
                                 {
                                     Console.BackgroundColor = ConsoleColor.Blue;
-                                    Console.Write("  ");
+                                    Console.Write("▒▒");
                                 }
                             }
                             else
@@ -197,12 +197,12 @@ namespace Battleships
                                 {
                                     Console.ForegroundColor = ConsoleColor.Blue;
                                     Console.BackgroundColor = ConsoleColor.DarkBlue;
-                                    Console.Write("▒▒");
+                                    Console.Write("  ");
                                 }
                                 else
                                 {
                                     Console.BackgroundColor = ConsoleColor.Blue;
-                                    Console.Write("  ");
+                                    Console.Write("▒▒");
                                 }
                             }
                             break;
@@ -255,13 +255,13 @@ namespace Battleships
                                 {
                                     Console.ForegroundColor = ConsoleColor.DarkGray;
                                     Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.Write("??");
+                                    Console.Write("░░");
                                 }
                                 else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                    Console.BackgroundColor = ConsoleColor.DarkGray;
-                                    Console.Write("??");
+                                    Console.ForegroundColor = ConsoleColor.Gray;
+                                    Console.BackgroundColor = ConsoleColor.Black;
+                                    Console.Write("  ");
                                 }
                             }
                             else
@@ -270,13 +270,13 @@ namespace Battleships
                                 {
                                     Console.ForegroundColor = ConsoleColor.DarkGray;
                                     Console.BackgroundColor = ConsoleColor.Black;
-                                    Console.Write("??");
+                                    Console.Write("░░");
                                 }
                                 else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                    Console.BackgroundColor = ConsoleColor.DarkGray;
-                                    Console.Write("??");
+                                    Console.ForegroundColor = ConsoleColor.Gray;
+                                    Console.BackgroundColor = ConsoleColor.Black;
+                                    Console.Write("  ");
                                 }
                             }
                             break;
@@ -581,7 +581,7 @@ namespace Battleships
             Console.SetCursorPosition(24, 1);
             Console.Write("Remaining Ships:");
             Console.SetCursorPosition(24, 2);
-            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.BackgroundColor = ConsoleColor.DarkGreen;
             Console.Write("You: " + player.remainingShips());
             Console.SetCursorPosition(24, 3);
             Console.BackgroundColor = ConsoleColor.Red;

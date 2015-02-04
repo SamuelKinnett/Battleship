@@ -13,6 +13,7 @@ namespace Battleships
         public int[,] map {get; set;}
         public int[,] playerMap {get; set;} //the players fleet known to the computer. A 0 indicates unknown space, a 1 indicates empty ocean, a 2 indicates a hit ship and a 3 indicates a destroyed ship.
         public Battleship[] ships;
+        public int[] playerShipsRemaining;
         bool hunting;
 
         public Computer()
@@ -30,6 +31,8 @@ namespace Battleships
             ships[2] = new Battleship("Submarine", 3);
             ships[3] = new Battleship("Cruiser", 3);
             ships[4] = new Battleship("Patrol Boat", 2);
+
+            playerShipsRemaining = new int[5] {1, 1, 1, 1, 1};
         }
 
         public void PlaceShips()
@@ -49,9 +52,13 @@ namespace Battleships
 
                 while (shipPlaced == false)
                 {
-                    if(rand.Next(0, 1) == 1)
+                    if (rand.Next(0, 2) == 1)
                     {
                         vertical = true;
+                    }
+                    else
+                    {
+                        vertical = false;
                     }
                     if (vertical == true)
                     {
@@ -266,7 +273,7 @@ namespace Battleships
 
             if (hunting)
             {
-                possibilityMap = CalculatepossiblePlacements();
+                possibilityMap = CalculatepossiblePlacements(player);
             }
             else
             {
@@ -311,14 +318,29 @@ namespace Battleships
         /// <param name="shipSize"></param>
         /// <param name="possibilityMap"></param>
         /// <returns></returns>
-        private int[,] CalculatepossiblePlacements()
+        private int[,] CalculatepossiblePlacements(Player player)
         {
             int[,] possibilityMap = new int[10, 10];
+            int smallestRemainingShip = 4;
             Array.Clear(possibilityMap, 0, possibilityMap.Length);
 
+            playerShipsRemaining = player.shipStatus();
+
+            if (playerShipsRemaining[0] == 1)
+            {
+                smallestRemainingShip = 1;
+            }
+            else if (playerShipsRemaining[1] == 1 || playerShipsRemaining[2] == 1)
+            {
+                smallestRemainingShip = 2;
+            }
+            else if (playerShipsRemaining[3] == 1)
+            {
+                smallestRemainingShip = 3;
+            }
             //Vertical placement possibilities
 
-            for (int currentShipSize = 0; currentShipSize < 5; currentShipSize++)
+            for (int currentShipSize = smallestRemainingShip; currentShipSize < 5; currentShipSize++)
             {
                 for (int x = 0; x < 10; x++)
                 {

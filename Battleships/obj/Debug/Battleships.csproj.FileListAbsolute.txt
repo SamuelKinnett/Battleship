@@ -12,3 +12,11 @@ C:\Users\samuel\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.pd
 C:\Users\samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.csprojResolveAssemblyReference.cache
 C:\Users\Samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.Properties.Resources.resources
 C:\Users\Samuel\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.csproj.GenerateResource.Cache
+\\ctstudent2\studentusers\100320071\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.exe.config
+\\ctstudent2\studentusers\100320071\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.exe
+\\ctstudent2\studentusers\100320071\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.pdb
+\\ctstudent2\studentusers\100320071\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.exe
+\\ctstudent2\studentusers\100320071\Documents\GitHub\Battleship\Battleships\bin\Debug\Battleships.pdb
+\\ctstudent2\studentusers\100320071\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.csprojResolveAssemblyReference.cache
+\\ctstudent2\studentusers\100320071\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.Properties.Resources.resources
+\\ctstudent2\studentusers\100320071\Documents\GitHub\Battleship\Battleships\obj\Debug\Battleships.csproj.GenerateResource.Cache
